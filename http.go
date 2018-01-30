@@ -11,12 +11,13 @@ import (
 if a reverse proxy has been setup (forwards X-REAL-IP in that case). It also takes into
 account that a user might be using a proxy itself */
 
-// ipRange - a structure that holds the start and end of a range of ip addresses
+// ipRange - a struct that holds the start and end of a range of ip addresses
 type ipRange struct {
 	start net.IP
 	end   net.IP
 }
 
+// Private IP Address Ranges as per https://en.wikipedia.org/wiki/Reserved_IP_addresses
 var privateRanges = []ipRange{
 	ipRange{
 		start: net.ParseIP("10.0.0.0"),
@@ -56,6 +57,7 @@ func inRange(r ipRange, ipAddress net.IP) bool {
 // isPrivateSubnet function check to see if this ip is in a private subnet
 func isPrivateSubnet(ipAddress net.IP) bool {
 	// my use case is only concerned with ipv4 atm
+
 	if ipCheck := ipAddress.To4(); ipCheck != nil {
 		// iterate over all our ranges
 		for _, r := range privateRanges {
